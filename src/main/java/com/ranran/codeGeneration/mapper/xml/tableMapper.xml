@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ranran.codeGeneration.mapper.TableMapper">
+    <resultMap id="tableMapper" type="com.ranran.codeGeneration.model.TableModel">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+        <result column="table_schema" jdbcType="VARCHAR" property="tableSchema" />
+        <result column="table_comment" jdbcType="VARCHAR" property="tableComment" />
+    </resultMap>
+
+    <resultMap id="tableColumnMapper" type="com.ranran.codeGeneration.model.TableColumnModel">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+        <result column="table_schema" jdbcType="VARCHAR" property="tableSchema" />
+        <result column="column_name" jdbcType="VARCHAR" property="columnName" />
+        <result column="ordinal_position" jdbcType="VARCHAR" property="ordinalPosition" />
+        <result column="is_nullable" jdbcType="VARCHAR" property="isNullable" />
+        <result column="data_type" jdbcType="VARCHAR" property="dataType" />
+        <result column="character_maximum_length" jdbcType="VARCHAR" property="characterMaximumLength" />
+        <result column="numeric_precision" jdbcType="VARCHAR" property="numericPrecision" />
+        <result column="numeric_scale" jdbcType="VARCHAR" property="numericScale" />
+        <result column="column_comment" jdbcType="VARCHAR" property="columnComment" />
+    </resultMap>
+
+    <!--查询数据表信息-->
+    <select id="selectTable" parameterType="com.ranran.codeGeneration.model.TableModel" resultMap="tableMapper">
+      select
+          table_name,
+          table_schema,
+          table_comment
+      from
+        information_schema.tables
+      <where>
+          <if test="tableSchema != null and tableSchema != '' ">
+            and table_schema = #{tableSchema}
+          </if>
+          <if test="tableName != null and tableName != '' ">
+              and table_name = #{tableName}
+          </if>
+      </where>
+    </select>
+
+    <!--查询数据表列信息-->
+    <select id="selectTableColumn" parameterType="com.ranran.codeGeneration.model.TableColumnModel" resultMap="tableColumnMapper">
+        select
+            column_name,
+            ordinal_position,
+            is_nullable,
+            data_type,
+            character_maximum_length,
+            numeric_precision,
+            numeric_scale,
+            column_comment
+        FROM
+          information_schema. columns
+        <where>
+            <if test="tableSchema != null and tableSchema != '' ">
+                and table_schema = #{tableSchema}
+            </if>
+            <if test="tableName != null and tableName != '' ">
+                and table_name = #{tableName}
+            </if>
+        </where>
+    </select>
+
+</mapper>
